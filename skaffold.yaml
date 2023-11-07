@@ -1,0 +1,52 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+
+profiles:
+  - name: local
+
+    activation:
+      - kubeContext: minikube
+
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: &image us.gcr.io/altway-internal/acrisure-nextjs
+          context: .
+          docker:
+            dockerfile: docker/gcp/Dockerfile
+
+    deploy:
+      kustomize:
+        paths:
+          - kube/init/overlays/local
+          - kube/deploy/overlays/local
+      
+    portForward:
+      - resourceType: Service
+        resourceName: acrisure-service
+        namespace: minikube
+        port: 3000
+        localPort: 3000
+  
+  - name: ci-cd
+
+    build:
+      tagPolicy:
+        envTemplate:
+          template: "{{ .REVISION }}"
+      artifacts:    
+        - image: *image
+          context: .
+          docker:
+            dockerfile: docker/gcp/Dockerfile
+          # sync:
+          #   manual:
+          #     - src: '**/*.js'
+          #       dest: .
+
+    deploy:
+      kustomize:
+        paths:
+          - "src/Acrisure/kube/init/overlays/{{ .OVERLAY_DIR }}"
+          - "src/Acrisure/kube/deploy/overlays/{{ .OVERLAY_DIR }}"

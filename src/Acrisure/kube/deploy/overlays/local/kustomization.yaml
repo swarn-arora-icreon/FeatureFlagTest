@@ -1,0 +1,5 @@
+namespace: minikube
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - deployment_patch.yaml

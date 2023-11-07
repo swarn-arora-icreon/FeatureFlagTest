@@ -1,0 +1,95 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acrisure-deployment
+spec:
+  selector:
+    matchLabels:
+      app: acrisure-deployment
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0%
+    type: RollingUpdate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: acrisure-deployment
+    spec:
+      tolerations:
+        - key: "access"
+          operator: "Equal"
+          value: "workload_identity"
+          effect: "NoSchedule"
+      nodeSelector:
+        access: "workload_identity"
+      # serviceAccountName: acrisure
+      containers:
+        - name: acrisure-deployment
+          image: us.gcr.io/altway-internal/acrisure-nextjs
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              port: 3000
+              path: /api/healthz
+          readinessProbe:
+            httpGet:
+              port: 3000
+              path: /api/healthz
+          startupProbe:
+            httpGet:
+              port: 3000
+              path: /api/healthz
+            failureThreshold: 18
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: PUBLIC_URL
+              value: "http://localhost:3000"
+            - name: JSS_EDITING_SECRET
+              value: ""
+            - name: SITECORE_API_KEY
+              value: "set-me"
+            - name: SITECORE_API_HOST
+              value: ""
+            - name: GRAPH_QL_ENDPOINT
+              value: "https://edge.sitecorecloud.io/api/graphql/v1"
+            - name: JSS_APP_NAME
+              value: Acrisure
+            - name: DEFAULT_LANGUAGE
+              value: ""
+            - name: FETCH_WITH
+              value: GraphQL
+            - name: DISABLE_SSG_FETCH
+              value: ""
+            - name: DEBUG
+              value: "sitecore-jss:*"
+            - name: NEXT_PUBLIC_CDP_TARGET_URL
+              value: ""
+            - name: NEXT_PUBLIC_CDP_CLIENT_KEY
+              value: ""
+            - name: NEXT_PUBLIC_PERSONALIZE_SCOPE
+              value: ""
+            - name: NEXT_PUBLIC_CDP_POINTOFSALE
+              value: ""
+            - name: PERSONALIZE_MIDDLEWARE_CDP_TIMEOUT
+              value: ""
+            - name: PERSONALIZE_MIDLEWARE_EDGE_TIMEOUT
+              value: ""
+            - name: NEXT_PUBLIC_IS_CDP_ENABLED
+              value: "false"
+            # - name: SPRING_PROFILES_ACTIVE
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: acrisure-config
+            #       key: spring.profiles.active
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+            requests:
+              memory: "1024Mi"
+              cpu: "50m"

@@ -1,0 +1,31 @@
+{
+  "root": true,
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:yaml/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "prettier", "yaml"],
+  "ignorePatterns": [".generated/**/*", "**/*.d.ts", "**/*.js"],
+  "rules": {
+    "@next/next/no-img-element": "off", // Don't force next/image
+    "jsx-a11y/alt-text": ["warn", { "elements": ["img"] }], // Don't force alt for <Image/> (sourced from Sitecore media)
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "jsx-quotes": ["error", "prefer-double"],
+    "prettier/prettier": ["off", {}, { "usePrettierrc": false }],
+    "react/display-name": "off",
+    "react/jsx-key": "off",
+    "react/no-children-prop": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/ban-types": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
+  }
+}

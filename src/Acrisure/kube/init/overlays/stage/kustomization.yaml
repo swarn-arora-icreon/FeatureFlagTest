@@ -1,0 +1,5 @@
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - service_patch.yaml
+  - secrets_patch.yaml
