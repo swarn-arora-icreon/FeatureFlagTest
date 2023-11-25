@@ -20,7 +20,7 @@ workflows:
     jobs:
       - build
       - test:
-          filters:
+          when:
             and:
              branches:
                only:
