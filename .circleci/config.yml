@@ -17,10 +17,10 @@ jobs:
 
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  build:
     jobs:
       - build
-      - test
+      - test:
           filters:
             branches:
               only:
