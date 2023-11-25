@@ -14,6 +14,12 @@ jobs:
     steps:
       - checkout
       - run: echo "this is the test job"
+  test1:
+    docker:
+      - image: cimg/base:2023.03
+    steps:
+      - checkout
+      - run: echo "this is the test job"
 
 # Orchestrate our job run sequence
 workflows:
@@ -25,4 +31,11 @@ workflows:
             branches:
               only:
                 - main
+      - test1:
+          filters:
+            branches:
+              only:
+                - main
+            tags:
+              only: dev5
 
