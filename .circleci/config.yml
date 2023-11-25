@@ -37,5 +37,5 @@ workflows:
               only:
                 - main
             tags:
-              only: dev
+              only: dev5
 
