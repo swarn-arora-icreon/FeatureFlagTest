@@ -20,11 +20,11 @@ workflows:
     jobs:
       - build
       - test:
-          when:
+          filters:
             and:
              branches:
                only:
                  - main
              tags:
-               only: /^dev\d+\.\d+\.\d+$/
+               only: dev7
 
