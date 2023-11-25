@@ -25,4 +25,5 @@ workflows:
               only:
                 - main
             tags:
+              only: /^dev\d+\.\d+\.\d+$/
 
