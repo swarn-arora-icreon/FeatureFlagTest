@@ -11,6 +11,13 @@ jobs:
 
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  build:
     jobs:
-      - build
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - main
