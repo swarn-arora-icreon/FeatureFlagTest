@@ -25,5 +25,13 @@ workflows:
                only:
                  - main
              tags:
-               only: dev7
+               only: /^dev\d+\.\d+\.\d+$/
+  build1:
+    when:
+      and: 
+        - equal: [ "^[0-9a-zA-Z]+.ci-dev" , << pipeline.git.tag >> ]
+        - equal: [ main, << pipeline.git.branch >> ]
+    jobs:
+      - build
+      - test
 
