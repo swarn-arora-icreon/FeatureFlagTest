@@ -32,11 +32,5 @@ workflows:
               only:
                 - main
       - test1:
-          filters:
-            and:
-              branches:
-                only:
-                  - main
-              tags:
-                only: /^dev\d+\.\d+\.\d+$/
+
 
