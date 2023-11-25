@@ -28,8 +28,8 @@ workflows:
                only: /^dev\d+\.\d+\.\d+$/
   build1:
     when:
-      or: 
-        - equal: [ "/.*-dev.*/" , << pipeline.git.tag >> ]
+      and: 
+        - equal: [ "ci-dev5" , << pipeline.git.tag >> ]
         - equal: [ "dev5", << pipeline.git.branch >> ]
     jobs:
       - build
