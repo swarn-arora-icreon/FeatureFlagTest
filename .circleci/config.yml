@@ -24,6 +24,5 @@ workflows:
             branches:
               only:
                 - main
-            Tags:
-              only: /^dev\d+\.\d+\.\d+$/
+            tags:
 
