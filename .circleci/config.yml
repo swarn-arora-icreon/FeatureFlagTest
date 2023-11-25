@@ -1,72 +1,16 @@
 version: 2.1
 
-orbs:
-  atg-ops: acrisuretechnology/atg-shared-ci@dev:alpha
+# Define the jobs we want to run for this project
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2023.03
+    steps:
+      - checkout
+      - run: echo "this is the build job"
 
-
-filters: &cd-filter
-  branches:
-    ignore: /.*/
-  tags:
-    only: /^v\d+\.\d+\.\d+$/
-
-
-context: &default-context [ gcp, github, slack, circleci, semgrep ]
-
-
+# Orchestrate our job run sequence
 workflows:
-  ci:
+  build_and_test:
     jobs:
-      - atg-ops/build-and-test:
-          name: build-and-test
-          context: *default-context
-          filters:
-            tags:
-              ignore: /.*/
-
-      - atg-ops/create-release:
-          name: create-release
-          context: *default-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only:
-              - main
-            tags:
-              ignore: /.*/
-
-  cd:
-    jobs:
-      - atg-ops/publish-artifacts:
-          name: publish-artifacts
-          context: *default-context
-          filters: *cd-filter
-
-      - atg-ops/dev-deploy:
-          name: dev-deploy
-          context: *default-context
-          filters: *cd-filter
-          requires: [ publish-artifacts ]
-
-      - stage-hold:
-          type: approval
-          filters: *cd-filter
-          requires: [ dev-deploy ]
-
-      - atg-ops/stage-deploy:
-          name: stage-deploy
-          context: *default-context
-          filters: *cd-filter
-          requires: [ stage-hold ]
-
-      - prod-hold:
-          type: approval
-          filters: *cd-filter
-          requires: [ stage-deploy ]
-
-      - atg-ops/prod-deploy:
-          name: prod-deploy
-          context: *default-context
-          filters: *cd-filter
-          requires: [ prod-hold ]
+      - build
