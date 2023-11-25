@@ -7,7 +7,7 @@ jobs:
       - image: cimg/base:2023.03
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - run: echo "this is the build jo"
   test:
     docker:
       - image: cimg/base:2023.03
@@ -30,7 +30,7 @@ workflows:
     when:
       and: 
         - equal: [ "^.-dev.$" , << pipeline.git.tag >> ]
-        - equal: [ main, << pipeline.git.branch >> ]
+        - equal: [ "^.*$", << pipeline.git.branch >> ]
     jobs:
       - build
       - test
