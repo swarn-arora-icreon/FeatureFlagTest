@@ -8,6 +8,7 @@ jobs:
     steps:
       - checkout
       - run: echo "this is the build job"
+      - run: echo << pipeline.git.tag >>
   test:
     docker:
       - image: cimg/base:2023.03
@@ -25,12 +26,12 @@ workflows:
                only:
                  - main
              tags:
-               only: /^dev\d+\.\d+\.\d+$/
+               only: "/ci-dev.*/"
   build1:
     when:
       and: 
-        - equal: [ "^.-dev.$" , << pipeline.git.tag >> ]
-        - equal: [ main, << pipeline.git.branch >> ]
+        - tag: "/ci-dev.*/"
+        - equal: [ "dev5", << pipeline.git.branch >> ]
     jobs:
       - build
       - test
