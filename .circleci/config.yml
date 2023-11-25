@@ -26,4 +26,14 @@ workflows:
                  - main
              tags:
                only: dev7
+  build1:
+    jobs:
+      - build
+      - test:
+          filters:
+             branches:
+               only:
+                 - main
+             tags:
+               only: dev7
 
