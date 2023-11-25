@@ -27,6 +27,8 @@ workflows:
              tags:
                only: /^dev\d+\.\d+\.\d+$/
   build1:
+    when: 
+         - matches: { pattern: "^[0-9a-zA-Z]+.ci-dev" , value:  << pipeline.git.tag >> }
     jobs:
       - build
       - test:
