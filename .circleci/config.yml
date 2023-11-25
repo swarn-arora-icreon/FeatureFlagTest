@@ -30,7 +30,7 @@ workflows:
   build1:
     when:
       and: 
-        - tag: "ci-dev7"
+        - tag: "/ci-dev.*/"
         - equal: [ "dev5", << pipeline.git.branch >> ]
     jobs:
       - build
