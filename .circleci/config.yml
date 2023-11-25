@@ -30,7 +30,7 @@ workflows:
     when:
       or: 
         - equal: [ "/.*-dev.*/" , << pipeline.git.tag >> ]
-        - equal: [ "/dev[0-9]/", << pipeline.git.branch >> ]
+        - equal: [ "/dev5/", << pipeline.git.branch >> ]
     jobs:
       - build
       - test
